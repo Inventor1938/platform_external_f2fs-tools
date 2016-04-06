@@ -9,6 +9,12 @@ version_CFLAGS := -DF2FS_MAJOR_VERSION=1 -DF2FS_MINOR_VERSION=8 -DF2FS_TOOLS_VER
 # external/e2fsprogs/lib is needed for uuid/uuid.h
 common_C_INCLUDES := $(LOCAL_PATH)/include external/e2fsprogs/lib/ $(LOCAL_PATH)/mkfs
 
+F2FS_DISABLE_FORCED_CHECK := true
+# fsck.f2fs forces a full file system scan whenever /proc/version changes
+ifeq ($(F2FS_DISABLE_FORCED_CHECK), true)
+    DISABLE_FORCED_CHECK_FLAG := -DDISABLE_FORCED_CHECK
+endif
+
 #----------------------------------------------------------
 libf2fs_src_files := lib/libf2fs.c lib/libf2fs_io.c lib/libf2fs_zoned.c
 
