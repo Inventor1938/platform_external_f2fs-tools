@@ -19,7 +19,7 @@
 #include <sys/stat.h>
 #include <sys/mount.h>
 #include <sys/ioctl.h>
-#ifndef WITH_ANDROID
+#ifndef __ANDROID__
 #include <scsi/sg.h>
 #endif
 #include <linux/hdreg.h>
@@ -27,7 +27,7 @@
 
 #include <f2fs_fs.h>
 
-#ifndef WITH_ANDROID
+#ifndef __ANDROID__
 /* SCSI command for standard inquiry*/
 #define MODELINQUIRY	0x12,0x00,0x00,0x00,0x4A,0x00
 #endif
@@ -681,7 +681,7 @@ int get_device_info(int i)
 #endif
 	struct stat stat_buf;
 	struct hd_geometry geom;
-#ifndef WITH_ANDROID
+#ifndef __ANDROID__
 	sg_io_hdr_t io_hdr;
 	unsigned char reply_buffer[96] = {0};
 	unsigned char model_inq[6] = {MODELINQUIRY};
@@ -735,7 +735,7 @@ int get_device_info(int i)
 		else
 			c.start_sector = geom.start;
 
-#ifndef WITH_ANDROID
+#ifndef __ANDROID__
 		/* Send INQUIRY command */
 		memset(&io_hdr, 0, sizeof(sg_io_hdr_t));
 		io_hdr.interface_id = 'S';
@@ -769,7 +769,7 @@ int get_device_info(int i)
 		return -1;
 	}
 
-#ifndef WITH_ANDROID
+#ifndef __ANDROID__
 	if (S_ISBLK(stat_buf.st_mode))
 		f2fs_get_zoned_model(i);
 
